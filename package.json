@@ -19,6 +19,7 @@
   "homepage": "https://github.com/SophLewDev/Javascript-Web-App#readme",
   "description": "",
   "dependencies": {
-    "jest": "^29.0.1"
+    "jest": "^29.0.1",
+    "jest-environment-jsdom": "^29.0.1"
   }
 }

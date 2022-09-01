@@ -30,8 +30,16 @@
     "notesView.js"(exports, module) {
       var NotesModel2 = require_notesModel();
       var NotesView2 = class {
-        constructor(model2) {
+        constructor(model2, api) {
           this.model = model2;
+          this.noteButtonEl = document.querySelector("#add-note-button");
+          this.newNote = document.querySelector("#note-input");
+          this.noteButtonEl.addEventListener("click", () => {
+            this.addNote();
+            this.removeNotes();
+            this.displayNotes();
+            this.newNote.value = "";
+          });
         }
         displayNotes() {
           this.model.getNotes().forEach((note) => {
@@ -42,6 +50,14 @@
             body.append(newElement);
           });
           document.querySelectorAll("div");
+        }
+        addNote() {
+          this.model.addNote(this.newNote.value);
+        }
+        removeNotes() {
+          document.querySelectorAll(".note").forEach((note) => {
+            note.remove();
+          });
         }
       };
       module.exports = NotesView2;
@@ -55,8 +71,7 @@
   var view = new NotesView(model);
   console.log("The notes app is running");
   console.log(model.getNotes());
-  model.addNote("This is an example note");
   view.displayNotes();
-  model.getNotes();
+  view.addNote();
   console.log("You've added a note!");
 })();

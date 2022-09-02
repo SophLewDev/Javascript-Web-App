@@ -8,6 +8,7 @@ class NotesView {
     this.noteButtonEl.addEventListener("click", () => {
       this.addNote();
       this.removeNotes();
+      // this.createNoteFromApi();
       this.displayNotes();
       this.newNote.value = "";
     })
@@ -30,6 +31,10 @@ class NotesView {
       this.displayNotes()
     })
   }
+
+  // createNoteFromApi(){
+  //   this.api.createNotes(this.newNote.value);
+  // }
 
   addNote() {
     this.model.addNote(this.newNote.value);

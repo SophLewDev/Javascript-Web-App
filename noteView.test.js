@@ -16,7 +16,8 @@ describe('NotesView', () => {
   
   it("displays the list of notes", () => {
     const model = new NotesModel;
-    const view = new NotesView(model);
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
     model.addNote("Hello")
     view.displayNotes()
     expect(document.querySelectorAll('div.note').length).toBe(1)
@@ -24,7 +25,8 @@ describe('NotesView', () => {
   
   it("displays the added note", () => {
     const model = new NotesModel;
-    const view = new NotesView(model);
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
     const noteButtonEl = document.querySelector("#add-note-button");
     const noteInputEl = document.querySelector("#note-input")
     noteInputEl.value = "This is a new note"
@@ -35,7 +37,8 @@ describe('NotesView', () => {
   
   it("displays the correct number of added notes", () => {
     const model = new NotesModel;
-    const view = new NotesView(model);
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
     const noteButtonEl = document.querySelector("#add-note-button");
     const noteInputEl = document.querySelector("#note-input")
     noteInputEl.value = "This is a new note"
@@ -46,7 +49,8 @@ describe('NotesView', () => {
 
   it("displays an empty input element after adding a note", () => {
     const model = new NotesModel;
-    const view = new NotesView(model);
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
     const noteButtonEl = document.querySelector("#add-note-button");
     const noteInputEl = document.querySelector("#note-input")
     noteInputEl.value = "This is a new note"

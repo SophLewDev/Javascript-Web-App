@@ -13,4 +13,5 @@ console.log("You've added a note!")
 // view.displayNotes()
 // view.addNote()
 view.displayNotesFromApi();
+// api.createNotes("Hello")
 

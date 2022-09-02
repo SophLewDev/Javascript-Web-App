@@ -5,6 +5,9 @@
 const fs = require('fs');
 const NotesView = require('./notesView')
 const NotesModel = require('./notesModel');
+const NotesApi = require('./notesApi');
+require("jest-fetch-mock").enableMocks();
+// jest.mock('./notesApi')
 
 describe('NotesView', () => {
   beforeEach(() => {
@@ -40,6 +43,7 @@ describe('NotesView', () => {
     noteButtonEl.click()
     expect(document.querySelectorAll(".note").length).toBe(2)
   })
+
   it("displays an empty input element after adding a note", () => {
     const model = new NotesModel;
     const view = new NotesView(model);
@@ -49,4 +53,21 @@ describe('NotesView', () => {
     noteButtonEl.click()
     expect(document.querySelector("#note-input").value).toBe("")
   })
+  
+  it("displays the notes from the API", () => {
+    const model = new NotesModel;
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
+
+    fetch.mockResponseOnce(
+          JSON.stringify(["Example 1", "Example 2"])
+        );
+
+    view.displayNotesFromApi(() => {
+      expect(document.querySelector(".note").length).toEqual(2);
+      expect(document.querySelector(".note").textContent).toBe('Example 1');
+    });
+    expect(document.querySelector(".note")).toBeNull();
+    expect(document.querySelectorAll(".note").length).toBe(0);
+ })
 })

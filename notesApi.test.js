@@ -23,9 +23,15 @@ describe('API class', () => {
   
   it("calls fetch and creates a new note", () => {
     const api = new NotesApi();
-    const note = "note"
+    const note = "note";
 
-    // api.createNotes(note)
+    fetch.mockResponseOnce(
+      JSON.stringify({content: "note"})
+    )
+
+    api.createNotes(note);
+
+    fetch.mockResponseOnce()
     // api.loadNotes((returned) => {
     //   expect(returned).toEqual("note")
     // })

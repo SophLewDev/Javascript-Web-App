@@ -74,4 +74,17 @@ describe('NotesView', () => {
     expect(document.querySelector(".note")).toBeNull();
     expect(document.querySelectorAll(".note").length).toBe(0);
  })
+  fit("display an error message", () => {
+    const model = new NotesModel;
+    const api = new NotesApi;
+    const view = new NotesView(model, api);
+
+    fetch.mockResponseOnce(
+      JSON.stringify(null)
+    );
+
+    view.displayError(() => {
+      expect(document.querySelector(".error").textContent).toEqual("Oops, something went wrong!")
+    })
+  })
 })

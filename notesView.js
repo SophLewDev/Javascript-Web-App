@@ -8,7 +8,7 @@ class NotesView {
     this.noteButtonEl.addEventListener("click", () => {
       this.addNote();
       this.removeNotes();
-      // this.createNoteFromApi();
+      this.createNoteFromApi();
       this.displayNotes();
       this.newNote.value = "";
     })
@@ -29,12 +29,26 @@ class NotesView {
     this.api.loadNotes((data) => {
       this.model.setNotes(data)
       this.displayNotes()
+    }, (error) => {
+      console.log(error)
+      this.displayError()
     })
   }
 
-  // createNoteFromApi(){
-  //   this.api.createNotes(this.newNote.value);
-  // }
+  displayError() {
+    const body = document.querySelector("body")
+    const newError = document.createElement("div")
+    newError.classList.add("error")
+    newError.textContent = "Oops, something went wrong!"
+    body.append(newError)
+  }
+
+  createNoteFromApi() {
+    this.api.createNotes(this.newNote.value, (error) => {
+      console.log(error)
+      this.displayError()
+    });
+  }
 
   addNote() {
     this.model.addNote(this.newNote.value);

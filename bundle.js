@@ -8,12 +8,15 @@
   var require_notesApi = __commonJS({
     "notesApi.js"(exports, module) {
       var NotesApi2 = class {
-        loadNotes(callback) {
+        loadNotes(callback, errorCb) {
           fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => {
             callback(data);
+          }).catch((error) => {
+            console.log(error);
+            errorCb(error);
           });
         }
-        createNotes(note) {
+        createNotes(note, cb) {
           let data = { content: note };
           fetch("http://localhost:3000/notes", {
             method: "POST",
@@ -24,7 +27,8 @@
           }).then((response) => response.json()).then((data2) => {
             console.log("Success:", data2);
           }).catch((error) => {
-            console.error("Error:", error);
+            console.log("Error:", error);
+            cb(error);
           });
         }
       };
@@ -68,6 +72,7 @@
           this.noteButtonEl.addEventListener("click", () => {
             this.addNote();
             this.removeNotes();
+            this.createNoteFromApi();
             this.displayNotes();
             this.newNote.value = "";
           });
@@ -86,6 +91,22 @@
           this.api.loadNotes((data) => {
             this.model.setNotes(data);
             this.displayNotes();
+          }, (error) => {
+            console.log(error);
+            this.displayError();
+          });
+        }
+        displayError() {
+          const body = document.querySelector("body");
+          const newError = document.createElement("div");
+          newError.classList.add("error");
+          newError.textContent = "Oops, something went wrong!";
+          body.append(newError);
+        }
+        createNoteFromApi() {
+          this.api.createNotes(this.newNote.value, (error) => {
+            console.log(error);
+            this.displayError();
           });
         }
         addNote() {
@@ -111,5 +132,10 @@
   console.log("The notes app is running");
   console.log(model.getNotes());
   console.log("You've added a note!");
-  view.displayNotesFromApi();
+  api.loadNotes((notes) => {
+    model.setNotes(notes);
+    view.displayNotes();
+  }, () => {
+    view.displayError();
+  });
 })();
